@@ -93,6 +93,14 @@ async function run() {
       res.send(bookings);
     });
 
+    // get buyers by email query
+    app.get("/users/buyer/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { email };
+      const user = await usersCollection.findOne(query);
+      res.send({ isBuyer: user?.role === "buyer" });
+    });
+
     // post booked products info to database
     app.post("/bookedItems", async (req, res) => {
       const bookings = req.body;
