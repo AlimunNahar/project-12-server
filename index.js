@@ -28,6 +28,9 @@ async function run() {
     const categoriesCollection = client
       .db("pureSnuggle")
       .collection("categories");
+    const bookingsCollection = client
+      .db("pureSnuggle")
+      .collection("bookedItems");
 
     // all categories
     app.get("/categories", async (req, res) => {
@@ -81,6 +84,24 @@ async function run() {
       const result = await usersCollection.insertOne(user);
       res.send(result);
     });
+
+    // get all booked items per user
+    app.get("/bookedItems", async (req, res) => {
+      const email = req.query.email;
+      const query = { email: email };
+      const bookings = await bookingsCollection.find(query).toArray();
+      res.send(bookings);
+    });
+
+    // post booked products info to database
+    app.post("/bookedItems", async (req, res) => {
+      const bookings = req.body;
+      // console.log(bookings);
+      const result = await bookingsCollection.insertOne(bookings);
+      res.send(result);
+    });
+
+    //
   } finally {
   }
 }
