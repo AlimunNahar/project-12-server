@@ -101,6 +101,22 @@ async function run() {
       res.send({ isBuyer: user?.role === "buyer" });
     });
 
+    // get seller by email query
+    app.get("/users/seller/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { email };
+      const user = await usersCollection.findOne(query);
+      res.send({ isSeller: user?.role === "seller" });
+    });
+
+    // get admin by email query
+    app.get("/users/admin/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { email };
+      const user = await usersCollection.findOne(query);
+      res.send({ isAdmin: user?.role === "admin" });
+    });
+
     // post booked products info to database
     app.post("/bookedItems", async (req, res) => {
       const bookings = req.body;
