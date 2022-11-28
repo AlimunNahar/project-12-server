@@ -189,7 +189,7 @@ async function run() {
     // seller delete
     app.delete("/seller/:id", async (req, res) => {
       const id = req.params.id;
-      console.log(id);
+      // console.log(id);
       const filter = { _id: ObjectId(id) };
       const seller = await usersCollection.deleteOne(filter);
       res.send(seller);
