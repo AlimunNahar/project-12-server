@@ -125,7 +125,13 @@ async function run() {
       res.send(result);
     });
 
-    //
+    //get booked items for user
+    app.get("/bookedItems", async (req, res) => {
+      const email = req.query.email;
+      const query = { email: email };
+      const bookedItems = await bookingsCollection.find(query).toArray();
+      res.send(bookedItems);
+    });
   } finally {
   }
 }
