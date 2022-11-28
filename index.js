@@ -132,6 +132,23 @@ async function run() {
       const bookedItems = await bookingsCollection.find(query).toArray();
       res.send(bookedItems);
     });
+
+    // insertData to products
+    app.post("/products", async (req, res) => {
+      const product = req.body;
+      console.log(product);
+      const result = await productsCollection.insertOne(product);
+      res.send(result);
+    });
+
+    // get products by seller email
+    app.get("/products", async (req, res) => {
+      const email = req.query.email;
+      console.log(email);
+      const query = { email: email };
+      const result = await productsCollection.find(query).toArray();
+      res.send(result);
+    });
   } finally {
   }
 }
