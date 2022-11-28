@@ -178,6 +178,13 @@ async function run() {
       const buyers = await usersCollection.find(query).toArray();
       res.send(buyers);
     });
+
+    // get all buyers
+    app.get("/allSellers", async (req, res) => {
+      const query = { role: "seller" };
+      const sellers = await usersCollection.find(query).toArray();
+      res.send(sellers);
+    });
   } finally {
   }
 }
