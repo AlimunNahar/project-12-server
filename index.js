@@ -31,6 +31,9 @@ async function run() {
     const bookingsCollection = client
       .db("pureSnuggle")
       .collection("bookedItems");
+    const advertiseCollection = client
+      .db("pureSnuggle")
+      .collection("advertisedProducts");
 
     // all categories
     app.get("/categories", async (req, res) => {
@@ -136,7 +139,7 @@ async function run() {
     // insertData to products
     app.post("/products", async (req, res) => {
       const product = req.body;
-      console.log(product);
+      // console.log(product);
       const result = await productsCollection.insertOne(product);
       res.send(result);
     });
@@ -148,6 +151,32 @@ async function run() {
       const query = { seller_email: email };
       const allProducts = await productsCollection.find(query).toArray();
       res.send(allProducts);
+    });
+
+    // post advertised items
+    app.post("/advertise", async (req, res) => {
+      const add = req.body;
+      // console.log(bookings);
+      const advertise = await advertiseCollection.insertOne(add);
+      res.send(advertise);
+    });
+
+    // get advertised items
+    app.get("/advertisedProducts", async (req, res) => {
+      const query = {};
+      const result = await advertiseCollection
+        .find(query)
+        .sort({ _id: -1 })
+        .limit(3)
+        .toArray();
+      res.send(result);
+    });
+
+    // get all buyers
+    app.get("/allBuyers", async (req, res) => {
+      const query = { role: "buyer" };
+      const buyers = await usersCollection.find(query).toArray();
+      res.send(buyers);
     });
   } finally {
   }
